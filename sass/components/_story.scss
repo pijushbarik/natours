@@ -1,0 +1,81 @@
+.story {
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba($color-black, 0.1);
+  background-color: rgba($color-white, 0.6);
+  border-radius: 3px; 
+  padding: 6rem;
+  padding-left: 9rem;
+  font-size: $default-font-size;
+  transform: skewX(-12deg);
+
+  @include response(tab-port) {
+    width: 100%;
+    padding: 4rem 4rem 4rem 7rem;
+  }
+
+  @include response(phone) {
+    transform: none;
+  }
+
+  &__shape {
+    height: 15rem;
+    width: 15rem;
+    float: left;
+    // ***shape outside doesn't change the shape of the element***
+    // just tells the neighours elements that it is a circle so that they accomodate themselves
+    transform: translateX(-3rem) skewX(12deg); // move the shape to the left. 
+    //padding or margin should not be used with floated elements
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+
+    @supports (clip-path: polygon(0 0)) or (-webkit-clip-path: polygon(0 0)) {
+      -webkit-clip-path: circle(50% at 50% 50%);
+      clip-path: circle(50% at 50% 50%);
+      -webkit-shape-outside: circle(50% at 50% 50%);
+      shape-outside: circle(50% at 50% 50%);  // 50% -1 radius, -2,3 center of the circle
+      border-radius: none;
+    }
+
+    @include response(phone) {
+      transform: translateX(-3rem) skewX(0);
+    }
+  }
+
+  &__img {
+    height: 100%;
+    transform: translateX(-4rem) scale(1.4);
+    transition: all 0.5s;
+  }
+
+  &__text {
+    transform: skewX(12deg);
+
+    @include response(phone) {
+      transform: none;
+    }
+  }
+
+  &__caption {
+    position: absolute;
+    @include absCenter;
+    color: $color-white;
+    text-transform: uppercase;
+    font-size: 1.7rem;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.5s; 
+    backface-visibility: hidden; // to fix the little shaking of the text on hover
+  }
+
+  &:hover &__caption {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  &:hover &__img {
+    transform: translateX(-4rem) scale(1);
+    filter: blur(3px) brightness(80%); // 100% is original brightness of the image
+  } 
+}
